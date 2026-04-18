@@ -40,8 +40,10 @@ const shipped = {
   bugs: pkg.bugs,
   engines: pkg.engines,
   type: pkg.type,
-  bin: pkg.bin,
-  main: pkg.main,
+  bin: Object.fromEntries(
+    Object.entries(pkg.bin).map(([k, v]) => [k, String(v).replace(/^\.\//, '')]),
+  ),
+  main: String(pkg.main).replace(/^\.\//, ''),
   files: ['dist', 'hooks-scripts', 'README.md', 'LICENSE'],
   dependencies: deps,
 };
