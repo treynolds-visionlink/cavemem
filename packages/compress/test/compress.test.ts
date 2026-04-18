@@ -40,6 +40,15 @@ describe('compress', () => {
     expect(out).toContain('https://example.com/really');
     expect(out).toContain('/etc/hosts');
   });
+  it('keeps a space between prose and preserved tokens', () => {
+    // Regression: collapseWhitespace used to trim trailing space off each prose
+    // segment, fusing "at /tmp/out.log" into "at/tmp/out.log" when joined.
+    const src = 'Run the build at /tmp/out.log using the command `pnpm build`.';
+    const out = compress(src);
+    expect(out).toMatch(/ \/tmp\/out\.log /);
+    expect(out).toMatch(/ `pnpm build`/);
+    expect(out).not.toMatch(/\S\/tmp/);
+  });
   it('deterministic', () => {
     const src = 'The database configuration is the implementation detail we need.';
     expect(compress(src)).toBe(compress(src));

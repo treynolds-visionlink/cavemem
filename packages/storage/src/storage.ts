@@ -94,9 +94,7 @@ export class Storage {
       )
       .all(sessionId, aroundId, half) as ObservationRow[];
     const after = this.db
-      .prepare(
-        'SELECT * FROM observations WHERE session_id = ? AND id > ? ORDER BY id ASC LIMIT ?',
-      )
+      .prepare('SELECT * FROM observations WHERE session_id = ? AND id > ? ORDER BY id ASC LIMIT ?')
       .all(sessionId, aroundId, limit - before.length) as ObservationRow[];
     const seen = new Set<number>();
     const merged: ObservationRow[] = [];

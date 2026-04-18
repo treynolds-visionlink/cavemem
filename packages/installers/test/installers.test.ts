@@ -42,18 +42,18 @@ describe('registry', () => {
 
 describe('deepMerge', () => {
   it('recursively merges nested objects', () => {
-    const a = { a: { b: 1, c: 2 }, d: 3 };
-    const b = { a: { c: 20, e: 5 }, f: 6 };
-    expect(deepMerge(a, b as Partial<typeof a>)).toEqual({
+    const a: Record<string, unknown> = { a: { b: 1, c: 2 }, d: 3 };
+    const b: Record<string, unknown> = { a: { c: 20, e: 5 }, f: 6 };
+    expect(deepMerge(a, b)).toEqual({
       a: { b: 1, c: 20, e: 5 },
       d: 3,
       f: 6,
     });
   });
   it('replaces arrays instead of concatenating', () => {
-    expect(deepMerge({ xs: [1, 2] }, { xs: [3] } as Partial<{ xs: number[] }>)).toEqual({
-      xs: [3],
-    });
+    const base: Record<string, unknown> = { xs: [1, 2] };
+    const add: Record<string, unknown> = { xs: [3] };
+    expect(deepMerge(base, add)).toEqual({ xs: [3] });
   });
 });
 
@@ -63,10 +63,7 @@ describe('claude-code installer', () => {
     const settingsPath = join(home, '.claude', 'settings.json');
     expect(existsSync(settingsPath)).toBe(true);
     const first = JSON.parse(readFileSync(settingsPath, 'utf8')) as {
-      hooks: Record<
-        string,
-        Array<{ hooks: Array<{ type: string; command: string }> }>
-      >;
+      hooks: Record<string, Array<{ hooks: Array<{ type: string; command: string }> }>>;
       mcpServers: Record<string, { command: string; args?: string[] }>;
     };
     expect(Object.keys(first.hooks).sort()).toEqual(

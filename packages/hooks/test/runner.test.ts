@@ -32,11 +32,7 @@ describe('runHook', () => {
   });
 
   it('user-prompt-submit records a compressed observation', async () => {
-    await runHook(
-      'session-start',
-      { session_id: 'sess-b', ide: 'claude-code' },
-      { store },
-    );
+    await runHook('session-start', { session_id: 'sess-b', ide: 'claude-code' }, { store });
     const r = await runHook(
       'user-prompt-submit',
       {
@@ -57,11 +53,7 @@ describe('runHook', () => {
   });
 
   it('post-tool-use records a tool_use observation with metadata', async () => {
-    await runHook(
-      'session-start',
-      { session_id: 'sess-c', ide: 'claude-code' },
-      { store },
-    );
+    await runHook('session-start', { session_id: 'sess-c', ide: 'claude-code' }, { store });
     const r = await runHook(
       'post-tool-use',
       {
@@ -81,11 +73,7 @@ describe('runHook', () => {
   });
 
   it('stop stores a turn summary; session-end rolls up turns and closes the session', async () => {
-    await runHook(
-      'session-start',
-      { session_id: 'sess-d', ide: 'claude-code' },
-      { store },
-    );
+    await runHook('session-start', { session_id: 'sess-d', ide: 'claude-code' }, { store });
     await runHook(
       'stop',
       { session_id: 'sess-d', ide: 'claude-code', turn_summary: 'fixed the auth bug' },
@@ -99,11 +87,7 @@ describe('runHook', () => {
     const turns = store.storage.listSummaries('sess-d').filter((s) => s.scope === 'turn');
     expect(turns).toHaveLength(2);
 
-    await runHook(
-      'session-end',
-      { session_id: 'sess-d', ide: 'claude-code' },
-      { store },
-    );
+    await runHook('session-end', { session_id: 'sess-d', ide: 'claude-code' }, { store });
     const sessions = store.storage.listSummaries('sess-d').filter((s) => s.scope === 'session');
     expect(sessions).toHaveLength(1);
     expect(store.storage.getSession('sess-d')?.ended_at).not.toBeNull();
@@ -111,26 +95,14 @@ describe('runHook', () => {
 
   it('returns ok=false with an error message when a handler throws', async () => {
     // Re-using a session id will trigger a PK conflict on session-start.
-    await runHook(
-      'session-start',
-      { session_id: 'dup', ide: 'claude-code' },
-      { store },
-    );
-    const r = await runHook(
-      'session-start',
-      { session_id: 'dup', ide: 'claude-code' },
-      { store },
-    );
+    await runHook('session-start', { session_id: 'dup', ide: 'claude-code' }, { store });
+    const r = await runHook('session-start', { session_id: 'dup', ide: 'claude-code' }, { store });
     expect(r.ok).toBe(false);
     expect(r.error).toBeTruthy();
   });
 
   it('hot-path hooks stay under a generous 150ms budget on a warm runtime', async () => {
-    await runHook(
-      'session-start',
-      { session_id: 'sess-perf', ide: 'claude-code' },
-      { store },
-    );
+    await runHook('session-start', { session_id: 'sess-perf', ide: 'claude-code' }, { store });
     // Warm up JIT / prepared-statement cache.
     for (let i = 0; i < 5; i++) {
       await runHook(

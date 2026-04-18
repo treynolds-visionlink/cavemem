@@ -36,7 +36,7 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch --onSuccess \"node dist/index.js\"",
-    "test": "vitest run --passWithNoTests",
+    "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "pack:release": "pnpm build && node scripts/pack-release.mjs",
     "publish:release": "pnpm pack:release && npm publish ./release --access public"
