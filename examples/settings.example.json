@@ -1,0 +1,24 @@
+{
+  "dataDir": "~/.caveman-mem",
+  "workerPort": 37777,
+  "logLevel": "info",
+  "compression": {
+    "intensity": "full",
+    "expandForModel": false
+  },
+  "embedding": {
+    "provider": "local",
+    "model": "Xenova/all-MiniLM-L6-v2"
+  },
+  "search": {
+    "alpha": 0.5,
+    "defaultLimit": 10
+  },
+  "privacy": {
+    "excludePatterns": ["**/.env", "**/secrets/**"],
+    "redactSecrets": true
+  },
+  "ides": {
+    "claude-code": true
+  }
+}

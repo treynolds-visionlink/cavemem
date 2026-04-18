@@ -1,0 +1,38 @@
+{
+  "name": "caveman-mem",
+  "version": "0.1.0",
+  "license": "MIT",
+  "description": "Cross-agent persistent memory with compressed storage.",
+  "type": "module",
+  "bin": {
+    "caveman-mem": "./dist/index.js"
+  },
+  "main": "./dist/index.js",
+  "files": ["dist", "hooks-scripts"],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --clean --banner '#!/usr/bin/env node'",
+    "dev": "tsup src/index.ts --format esm --watch --banner '#!/usr/bin/env node' --onSuccess \"node dist/index.js\"",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@caveman-mem/compress": "workspace:*",
+    "@caveman-mem/config": "workspace:*",
+    "@caveman-mem/core": "workspace:*",
+    "@caveman-mem/hooks": "workspace:*",
+    "@caveman-mem/installers": "workspace:*",
+    "@caveman-mem/mcp-server": "workspace:*",
+    "@caveman-mem/storage": "workspace:*",
+    "@caveman-mem/worker": "workspace:*",
+    "commander": "^12.1.0",
+    "kleur": "^4.1.5"
+  },
+  "devDependencies": {
+    "tsup": "^8.3.5",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.5"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

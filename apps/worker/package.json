@@ -1,0 +1,29 @@
+{
+  "name": "@caveman-mem/worker",
+  "version": "0.1.0",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "main": "./dist/server.js",
+  "bin": {
+    "caveman-mem-worker": "./dist/server.js"
+  },
+  "scripts": {
+    "build": "tsup src/server.ts --format esm --dts --clean",
+    "dev": "tsup src/server.ts --format esm --dts --watch",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@caveman-mem/compress": "workspace:*",
+    "@caveman-mem/config": "workspace:*",
+    "@caveman-mem/core": "workspace:*",
+    "hono": "^4.6.10",
+    "@hono/node-server": "^1.13.7"
+  },
+  "devDependencies": {
+    "tsup": "^8.3.5",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.5"
+  }
+}
