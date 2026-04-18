@@ -11,3 +11,4 @@ coverage
 !.env.example
 ~/.caveman-mem
 .caveman-mem-dev
+pnpm-lock.yaml

@@ -17,12 +17,6 @@
     "node": ">=20.0.0"
   },
   "packageManager": "pnpm@9.12.0",
-  "workspaces": [
-    "apps/*",
-    "packages/*",
-    "viewer",
-    "evals"
-  ],
   "scripts": {
     "build": "pnpm -r --filter \"./packages/*\" --filter \"./apps/*\" build",
     "dev": "pnpm --filter @caveman-mem/cli dev",
