@@ -3,7 +3,8 @@ import { existsSync, readFileSync, unlinkSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { Command } from 'commander';
 import kleur from 'kleur';
-import { loadSettings, resolveDataDir } from '@caveman-mem/config';
+import { loadSettings, resolveDataDir } from '@cavemem/config';
+import { resolveCliPath } from '../util/resolve.js';
 
 function pidFile(): string {
   return join(resolveDataDir(loadSettings().dataDir), 'worker.pid');
@@ -20,6 +21,7 @@ function isAlive(pid: number): boolean {
 
 export function registerWorkerCommand(program: Command): void {
   const w = program.command('worker').description('Manage local worker daemon');
+
   w.command('start')
     .description('Start the worker in the background')
     .action(async () => {
@@ -32,18 +34,23 @@ export function registerWorkerCommand(program: Command): void {
         }
         unlinkSync(pf);
       }
-      const entry = await import('@caveman-mem/worker').catch(() => null);
-      const cmd = process.argv[0] ?? 'node';
-      const script = entry ? new URL('@caveman-mem/worker').toString() : '';
-      const child = spawn(
-        cmd,
-        ['-e', 'import("@caveman-mem/worker").then(m=>m.start());'],
-        { detached: true, stdio: 'ignore', env: process.env },
-      );
+      const child = spawn(resolveCliPath(), ['worker', 'run'], {
+        detached: true,
+        stdio: 'ignore',
+        env: process.env,
+      });
       child.unref();
       writeFileSync(pf, String(child.pid));
       process.stdout.write(`${kleur.green('started')} (pid ${child.pid})\n`);
     });
+
+  w.command('run')
+    .description('Run the worker in the foreground (internal)')
+    .action(async () => {
+      const mod = await import('@cavemem/worker');
+      await mod.start();
+    });
+
   w.command('stop')
     .description('Stop the worker daemon')
     .action(async () => {
@@ -62,6 +69,7 @@ export function registerWorkerCommand(program: Command): void {
         unlinkSync(pf);
       }
     });
+
   w.command('status')
     .description('Show worker status')
     .action(async () => {

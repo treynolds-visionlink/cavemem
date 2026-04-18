@@ -1,31 +1,61 @@
 {
-  "name": "caveman-mem",
+  "name": "cavemem",
   "version": "0.1.0",
   "license": "MIT",
-  "description": "Cross-agent persistent memory with compressed storage.",
+  "description": "Cross-agent persistent memory with compressed storage. Plug-and-play memory for Claude Code, Gemini CLI, OpenCode, Codex, and Cursor.",
+  "keywords": [
+    "memory",
+    "mcp",
+    "agent",
+    "claude-code",
+    "gemini-cli",
+    "codex",
+    "cursor",
+    "ai",
+    "compression",
+    "llm"
+  ],
+  "author": "Julius Brussee",
+  "homepage": "https://github.com/JuliusBrussee/cavemem",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JuliusBrussee/cavemem.git"
+  },
+  "bugs": {
+    "url": "https://github.com/JuliusBrussee/cavemem/issues"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "type": "module",
   "bin": {
-    "caveman-mem": "./dist/index.js"
+    "cavemem": "./dist/index.js"
   },
   "main": "./dist/index.js",
-  "files": ["dist", "hooks-scripts"],
+  "files": ["dist", "hooks-scripts", "README.md", "LICENSE"],
   "scripts": {
-    "build": "tsup src/index.ts --format esm --clean --banner '#!/usr/bin/env node'",
-    "dev": "tsup src/index.ts --format esm --watch --banner '#!/usr/bin/env node' --onSuccess \"node dist/index.js\"",
+    "build": "tsup",
+    "dev": "tsup --watch --onSuccess \"node dist/index.js\"",
     "test": "vitest run --passWithNoTests",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "pack:release": "pnpm build && node scripts/pack-release.mjs",
+    "publish:release": "pnpm pack:release && npm publish ./release --access public"
   },
   "dependencies": {
-    "@caveman-mem/compress": "workspace:*",
-    "@caveman-mem/config": "workspace:*",
-    "@caveman-mem/core": "workspace:*",
-    "@caveman-mem/hooks": "workspace:*",
-    "@caveman-mem/installers": "workspace:*",
-    "@caveman-mem/mcp-server": "workspace:*",
-    "@caveman-mem/storage": "workspace:*",
-    "@caveman-mem/worker": "workspace:*",
+    "@cavemem/compress": "workspace:*",
+    "@cavemem/config": "workspace:*",
+    "@cavemem/core": "workspace:*",
+    "@cavemem/hooks": "workspace:*",
+    "@cavemem/installers": "workspace:*",
+    "@cavemem/mcp-server": "workspace:*",
+    "@cavemem/storage": "workspace:*",
+    "@cavemem/worker": "workspace:*",
     "commander": "^12.1.0",
-    "kleur": "^4.1.5"
+    "kleur": "^4.1.5",
+    "better-sqlite3": "^11.5.0",
+    "hono": "^4.6.10",
+    "@hono/node-server": "^1.13.7",
+    "@modelcontextprotocol/sdk": "^1.0.0"
   },
   "devDependencies": {
     "tsup": "^8.3.5",

@@ -24,7 +24,7 @@ export const geminiCli: Installer = {
     const current = readJson<GeminiSettings>(path, {});
     const next = deepMerge<GeminiSettings>(current, {
       mcpServers: {
-        'caveman-mem': { command: ctx.cliPath, args: ['mcp'] },
+        'cavemem': { command: ctx.cliPath, args: ['mcp'] },
       },
     });
     writeJson(path, next);
@@ -33,7 +33,7 @@ export const geminiCli: Installer = {
   async uninstall(_ctx): Promise<string[]> {
     const path = settingsFile();
     const current = readJson<GeminiSettings>(path, {});
-    if (current.mcpServers) delete current.mcpServers['caveman-mem'];
+    if (current.mcpServers) delete current.mcpServers['cavemem'];
     writeJson(path, current);
     return [`updated ${path}`];
   },

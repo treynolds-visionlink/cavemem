@@ -1,6 +1,6 @@
-import { compress, expand, redactPrivate } from '@caveman-mem/compress';
-import type { Settings } from '@caveman-mem/config';
-import { Storage, type NewObservation, type ObservationRow } from '@caveman-mem/storage';
+import { compress, expand, redactPrivate } from '@cavemem/compress';
+import type { Settings } from '@cavemem/config';
+import { Storage, type NewObservation, type ObservationRow } from '@cavemem/storage';
 import { cosine, hybridRank } from './ranker.js';
 import type { GetObservationsOptions, Observation, SearchResult } from './types.js';
 

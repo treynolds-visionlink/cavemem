@@ -1,5 +1,5 @@
 import { Command } from 'commander';
-import { runHook, type HookName } from '@caveman-mem/hooks';
+import { runHook, type HookName } from '@cavemem/hooks';
 
 const VALID: HookName[] = [
   'session-start',

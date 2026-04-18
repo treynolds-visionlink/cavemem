@@ -16,13 +16,13 @@ Link the CLI for local use:
 
 ```bash
 cd apps/cli && pnpm link --global
-caveman-mem --help
+cavemem --help
 ```
 
 ## Run against a scratch data dir
 
 ```bash
-export CAVEMAN_MEM_HOME=$PWD/.caveman-mem-dev
+export CAVEMEM_HOME=$PWD/.cavemem-dev
 pnpm dev
 ```
 

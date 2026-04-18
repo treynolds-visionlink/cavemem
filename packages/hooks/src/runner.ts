@@ -1,5 +1,5 @@
-import { MemoryStore } from '@caveman-mem/core';
-import { loadSettings, resolveDataDir } from '@caveman-mem/config';
+import { MemoryStore } from '@cavemem/core';
+import { loadSettings, resolveDataDir } from '@cavemem/config';
 import { join } from 'node:path';
 import { sessionStart } from './handlers/session-start.js';
 import { userPromptSubmit } from './handlers/user-prompt-submit.js';

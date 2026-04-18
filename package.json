@@ -1,17 +1,17 @@
 {
-  "name": "caveman-mem",
+  "name": "cavemem",
   "version": "0.1.0",
   "private": true,
   "description": "Cross-agent persistent memory with compressed storage.",
   "license": "MIT",
   "author": "Julius Brussee",
-  "homepage": "https://github.com/JuliusBrussee/caveman-mem",
+  "homepage": "https://github.com/JuliusBrussee/cavemem",
   "repository": {
     "type": "git",
-    "url": "https://github.com/JuliusBrussee/caveman-mem.git"
+    "url": "https://github.com/JuliusBrussee/cavemem.git"
   },
   "bugs": {
-    "url": "https://github.com/JuliusBrussee/caveman-mem/issues"
+    "url": "https://github.com/JuliusBrussee/cavemem/issues"
   },
   "engines": {
     "node": ">=20.0.0"
@@ -19,7 +19,7 @@
   "packageManager": "pnpm@9.12.0",
   "scripts": {
     "build": "pnpm -r --filter \"./packages/*\" --filter \"./apps/*\" build",
-    "dev": "pnpm --filter @caveman-mem/cli dev",
+    "dev": "pnpm --filter @cavemem/cli dev",
     "test": "pnpm -r test",
     "typecheck": "pnpm -r typecheck",
     "lint": "biome check .",

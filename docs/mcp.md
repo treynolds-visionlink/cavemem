@@ -1,6 +1,6 @@
 # MCP tools
 
-caveman-mem exposes three tools over an MCP stdio server. The design goal is **progressive disclosure**: hits are compact until the agent asks for more.
+cavemem exposes three tools over an MCP stdio server. The design goal is **progressive disclosure**: hits are compact until the agent asks for more.
 
 ## `search`
 

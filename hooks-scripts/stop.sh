@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-exec caveman-mem hook run stop
+exec cavemem hook run stop

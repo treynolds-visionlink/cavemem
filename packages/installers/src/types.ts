@@ -1,9 +1,9 @@
 export interface InstallContext {
   /** Directory where the IDE keeps its config. */
   ideConfigDir: string;
-  /** Absolute path to the caveman-mem CLI (resolved by the caller). */
+  /** Absolute path to the cavemem CLI (resolved by the caller). */
   cliPath: string;
-  /** Absolute path to the local data dir (e.g., ~/.caveman-mem). */
+  /** Absolute path to the local data dir (e.g., ~/.cavemem). */
   dataDir: string;
 }
 

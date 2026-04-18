@@ -6,6 +6,6 @@ export function registerMcpCommand(program: Command): void {
     .description('Run the MCP stdio server (typically invoked by the IDE)')
     .action(async () => {
       // Delegate: importing runs main() via the server module.
-      await import('@caveman-mem/mcp-server');
+      await import('@cavemem/mcp-server');
     });
 }

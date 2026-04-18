@@ -45,7 +45,7 @@ export const claudeCode: Installer = {
     }
     const mcpServers = {
       ...(current.mcpServers ?? {}),
-      'caveman-mem': {
+      'cavemem': {
         command: ctx.cliPath,
         args: ['mcp'],
       },
@@ -60,7 +60,7 @@ export const claudeCode: Installer = {
     if (current.hooks) {
       for (const [claudeName] of HOOK_NAMES) delete current.hooks[claudeName];
     }
-    if (current.mcpServers) delete current.mcpServers['caveman-mem'];
+    if (current.mcpServers) delete current.mcpServers['cavemem'];
     writeJson(path, current);
     return [`updated ${path}`];
   },

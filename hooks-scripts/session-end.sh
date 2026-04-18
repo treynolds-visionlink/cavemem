@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-exec caveman-mem hook run session-end
+exec cavemem hook run session-end

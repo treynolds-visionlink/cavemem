@@ -8,7 +8,7 @@ let dir: string;
 let storage: Storage;
 
 beforeEach(() => {
-  dir = mkdtempSync(join(tmpdir(), 'caveman-mem-'));
+  dir = mkdtempSync(join(tmpdir(), 'cavemem-'));
   storage = new Storage(join(dir, 'test.db'));
 });
 

@@ -4,7 +4,7 @@ import { dirname, join, resolve } from 'node:path';
 import { SettingsSchema, type Settings } from './schema.js';
 import { defaultSettings } from './defaults.js';
 
-const DEFAULT_DIR = '.caveman-mem';
+const DEFAULT_DIR = '.cavemem';
 
 export function resolveDataDir(raw: string): string {
   if (raw.startsWith('~')) return join(homedir(), raw.slice(1).replace(/^\/+/, ''));

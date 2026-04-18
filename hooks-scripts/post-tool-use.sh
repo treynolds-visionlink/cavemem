@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-exec caveman-mem hook run post-tool-use
+exec cavemem hook run post-tool-use

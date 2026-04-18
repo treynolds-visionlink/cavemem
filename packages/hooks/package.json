@@ -1,5 +1,5 @@
 {
-  "name": "@caveman-mem/hooks",
+  "name": "@cavemem/hooks",
   "version": "0.1.0",
   "license": "MIT",
   "type": "module",
@@ -19,8 +19,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@caveman-mem/config": "workspace:*",
-    "@caveman-mem/core": "workspace:*"
+    "@cavemem/config": "workspace:*",
+    "@cavemem/core": "workspace:*"
   },
   "devDependencies": {
     "tsup": "^8.3.5",

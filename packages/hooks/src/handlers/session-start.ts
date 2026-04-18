@@ -1,4 +1,4 @@
-import type { MemoryStore } from '@caveman-mem/core';
+import type { MemoryStore } from '@cavemem/core';
 import type { HookInput } from '../types.js';
 
 export async function sessionStart(store: MemoryStore, input: HookInput): Promise<string> {

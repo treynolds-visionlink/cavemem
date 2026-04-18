@@ -1,7 +1,7 @@
 import { copyFileSync, readFileSync, writeFileSync } from 'node:fs';
 import { Command } from 'commander';
-import { compress, expand, countTokens } from '@caveman-mem/compress';
-import { loadSettings } from '@caveman-mem/config';
+import { compress, expand, countTokens } from '@cavemem/compress';
+import { loadSettings } from '@cavemem/config';
 import kleur from 'kleur';
 
 export function registerCompressCommands(program: Command): void {

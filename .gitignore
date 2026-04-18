@@ -9,6 +9,6 @@ coverage
 .env
 .env.*
 !.env.example
-~/.caveman-mem
-.caveman-mem-dev
+~/.cavemem
+.cavemem-dev
 pnpm-lock.yaml

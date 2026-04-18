@@ -8,7 +8,7 @@ export type EmbeddingProvider = z.infer<typeof EmbeddingProvider>;
 
 export const SettingsSchema = z
   .object({
-    dataDir: z.string().default('~/.caveman-mem'),
+    dataDir: z.string().default('~/.cavemem'),
     workerPort: z.number().int().positive().default(37777),
     logLevel: z.enum(['debug', 'info', 'warn', 'error']).default('info'),
     compression: z

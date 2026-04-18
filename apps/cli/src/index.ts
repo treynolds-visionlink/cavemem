@@ -13,7 +13,7 @@ import { registerWorkerCommand } from './commands/worker.js';
 const program = new Command();
 
 program
-  .name('caveman-mem')
+  .name('cavemem')
   .description('Cross-agent persistent memory with compressed storage.')
   .version('0.1.0');
 
@@ -29,6 +29,6 @@ registerHookCommand(program);
 registerReindexCommand(program);
 
 program.parseAsync(process.argv).catch((err) => {
-  process.stderr.write(`caveman-mem error: ${err instanceof Error ? err.message : String(err)}\n`);
+  process.stderr.write(`cavemem error: ${err instanceof Error ? err.message : String(err)}\n`);
   process.exit(1);
 });

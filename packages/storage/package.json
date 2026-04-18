@@ -1,5 +1,5 @@
 {
-  "name": "@caveman-mem/storage",
+  "name": "@cavemem/storage",
   "version": "0.1.0",
   "license": "MIT",
   "type": "module",
@@ -19,7 +19,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@caveman-mem/config": "workspace:*",
+    "@cavemem/config": "workspace:*",
     "better-sqlite3": "^11.5.0"
   },
   "devDependencies": {

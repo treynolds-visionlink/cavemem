@@ -1,5 +1,5 @@
 {
-  "name": "@caveman-mem/evals",
+  "name": "@cavemem/evals",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -9,7 +9,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@caveman-mem/compress": "workspace:*"
+    "@cavemem/compress": "workspace:*"
   },
   "devDependencies": {
     "tsx": "^4.19.2",

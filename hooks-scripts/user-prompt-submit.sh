@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-exec caveman-mem hook run user-prompt-submit
+exec cavemem hook run user-prompt-submit

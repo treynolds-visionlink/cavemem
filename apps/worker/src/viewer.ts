@@ -1,4 +1,4 @@
-import type { SessionRow } from '@caveman-mem/storage';
+import type { SessionRow } from '@cavemem/storage';
 
 const style = `
   body { font: 14px/1.5 -apple-system, system-ui, sans-serif; margin: 0; background: #0b0d10; color: #e6e6e6; }
@@ -15,7 +15,7 @@ const style = `
 `;
 
 function layout(title: string, body: string): string {
-  return `<!doctype html><html><head><meta charset="utf-8"><title>${title}</title><style>${style}</style></head><body><header><h1>caveman-mem</h1><div class="meta">local memory viewer</div></header><main>${body}</main></body></html>`;
+  return `<!doctype html><html><head><meta charset="utf-8"><title>${title}</title><style>${style}</style></head><body><header><h1>cavemem</h1><div class="meta">local memory viewer</div></header><main>${body}</main></body></html>`;
 }
 
 function esc(s: string): string {
@@ -23,7 +23,7 @@ function esc(s: string): string {
 }
 
 export function renderIndex(sessions: SessionRow[]): string {
-  if (sessions.length === 0) return layout('caveman-mem', '<p>No sessions yet.</p>');
+  if (sessions.length === 0) return layout('cavemem', '<p>No sessions yet.</p>');
   const items = sessions
     .map(
       (s) => `
@@ -33,7 +33,7 @@ export function renderIndex(sessions: SessionRow[]): string {
       </div>`,
     )
     .join('');
-  return layout('caveman-mem · sessions', `<h2>Recent sessions</h2>${items}`);
+  return layout('cavemem · sessions', `<h2>Recent sessions</h2>${items}`);
 }
 
 export function renderSession(
@@ -50,7 +50,7 @@ export function renderSession(
     )
     .join('');
   return layout(
-    `caveman-mem · ${session.id}`,
+    `cavemem · ${session.id}`,
     `<h2>${esc(session.id)} <span class="meta">(${esc(session.ide)})</span></h2><p><a href="/">&larr; all sessions</a></p>${rows}`,
   );
 }

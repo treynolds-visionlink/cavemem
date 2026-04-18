@@ -8,9 +8,9 @@ import {
   resolveDataDir,
   saveSettings,
   settingsPath,
-} from '@caveman-mem/config';
+} from '@cavemem/config';
 import { existsSync } from 'node:fs';
-import { getInstaller, installers, type IdeName } from '@caveman-mem/installers';
+import { getInstaller, installers, type IdeName } from '@cavemem/installers';
 import { resolveCliPath } from '../util/resolve.js';
 
 export function registerInstallCommand(program: Command): void {
@@ -41,6 +41,6 @@ export function registerInstallCommand(program: Command): void {
       for (const m of msgs) process.stdout.write(`${kleur.green('✓')} ${m}\n`);
       settings.ides[name] = true;
       saveSettings(settings);
-      process.stdout.write(`\n${kleur.bold('next:')} run ${kleur.cyan('caveman-mem doctor')}\n`);
+      process.stdout.write(`\n${kleur.bold('next:')} run ${kleur.cyan('cavemem doctor')}\n`);
     });
 }

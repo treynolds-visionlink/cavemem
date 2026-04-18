@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import { join } from 'node:path';
-import { loadSettings, resolveDataDir } from '@caveman-mem/config';
-import { MemoryStore } from '@caveman-mem/core';
-import { expand } from '@caveman-mem/compress';
+import { loadSettings, resolveDataDir } from '@cavemem/config';
+import { MemoryStore } from '@cavemem/core';
+import { expand } from '@cavemem/compress';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { z } from 'zod';
@@ -19,7 +19,7 @@ async function main(): Promise<void> {
   const store = new MemoryStore({ dbPath, settings });
 
   const server = new McpServer({
-    name: 'caveman-mem',
+    name: 'cavemem',
     version: '0.1.0',
   });
 
@@ -77,6 +77,6 @@ async function main(): Promise<void> {
 
 main().catch((err) => {
   // stderr only — stdout is reserved for the MCP protocol.
-  process.stderr.write(`[caveman-mem mcp] fatal: ${String(err)}\n`);
+  process.stderr.write(`[cavemem mcp] fatal: ${String(err)}\n`);
   process.exit(1);
 });

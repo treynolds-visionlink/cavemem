@@ -1,8 +1,8 @@
 import { homedir } from 'node:os';
 import { Command } from 'commander';
 import kleur from 'kleur';
-import { loadSettings, resolveDataDir, saveSettings } from '@caveman-mem/config';
-import { getInstaller, installers, type IdeName } from '@caveman-mem/installers';
+import { loadSettings, resolveDataDir, saveSettings } from '@cavemem/config';
+import { getInstaller, installers, type IdeName } from '@cavemem/installers';
 import { resolveCliPath } from '../util/resolve.js';
 
 export function registerUninstallCommand(program: Command): void {

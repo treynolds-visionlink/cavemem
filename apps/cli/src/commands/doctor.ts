@@ -2,8 +2,8 @@ import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { Command } from 'commander';
 import kleur from 'kleur';
-import { loadSettings, resolveDataDir, settingsPath } from '@caveman-mem/config';
-import { Storage } from '@caveman-mem/storage';
+import { loadSettings, resolveDataDir, settingsPath } from '@cavemem/config';
+import { Storage } from '@cavemem/storage';
 
 export function registerDoctorCommand(program: Command): void {
   program

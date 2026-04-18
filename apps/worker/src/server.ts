@@ -2,9 +2,9 @@
 import { join } from 'node:path';
 import { serve } from '@hono/node-server';
 import { Hono } from 'hono';
-import { loadSettings, resolveDataDir } from '@caveman-mem/config';
-import { MemoryStore } from '@caveman-mem/core';
-import { expand } from '@caveman-mem/compress';
+import { loadSettings, resolveDataDir } from '@cavemem/config';
+import { MemoryStore } from '@cavemem/core';
+import { expand } from '@cavemem/compress';
 import { renderIndex, renderSession } from './viewer.js';
 
 export async function start(): Promise<void> {
@@ -44,12 +44,12 @@ export async function start(): Promise<void> {
   });
 
   serve({ fetch: app.fetch, port: settings.workerPort, hostname: '127.0.0.1' });
-  process.stderr.write(`[caveman-mem worker] listening on http://127.0.0.1:${settings.workerPort}\n`);
+  process.stderr.write(`[cavemem worker] listening on http://127.0.0.1:${settings.workerPort}\n`);
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {
   start().catch((err) => {
-    process.stderr.write(`[caveman-mem worker] fatal: ${String(err)}\n`);
+    process.stderr.write(`[cavemem worker] fatal: ${String(err)}\n`);
     process.exit(1);
   });
 }

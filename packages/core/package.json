@@ -1,5 +1,5 @@
 {
-  "name": "@caveman-mem/core",
+  "name": "@cavemem/core",
   "version": "0.1.0",
   "license": "MIT",
   "type": "module",
@@ -19,9 +19,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@caveman-mem/compress": "workspace:*",
-    "@caveman-mem/config": "workspace:*",
-    "@caveman-mem/storage": "workspace:*"
+    "@cavemem/compress": "workspace:*",
+    "@cavemem/config": "workspace:*",
+    "@cavemem/storage": "workspace:*"
   },
   "devDependencies": {
     "tsup": "^8.3.5",

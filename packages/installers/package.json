@@ -1,5 +1,5 @@
 {
-  "name": "@caveman-mem/installers",
+  "name": "@cavemem/installers",
   "version": "0.1.0",
   "license": "MIT",
   "type": "module",
@@ -19,7 +19,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@caveman-mem/config": "workspace:*"
+    "@cavemem/config": "workspace:*"
   },
   "devDependencies": {
     "tsup": "^8.3.5",

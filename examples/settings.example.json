@@ -1,5 +1,5 @@
 {
-  "dataDir": "~/.caveman-mem",
+  "dataDir": "~/.cavemem",
   "workerPort": 37777,
   "logLevel": "info",
   "compression": {
