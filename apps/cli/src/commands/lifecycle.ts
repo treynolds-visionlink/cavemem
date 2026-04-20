@@ -53,7 +53,8 @@ function startWorker(silent = false): number | null {
       // ignore
     }
   }
-  const child = spawn(resolveCliPath(), ['worker', 'run'], {
+  // Spawn `node <cli> worker run` so Windows doesn't try to exec a .js directly.
+  const child = spawn(process.execPath, [resolveCliPath(), 'worker', 'run'], {
     detached: true,
     stdio: 'ignore',
     env: process.env,

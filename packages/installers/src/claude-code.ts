@@ -1,7 +1,7 @@
 import { existsSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { join } from 'node:path';
-import { deepMerge, readJson, writeJson } from './fs-utils.js';
+import { deepMerge, readJson, shellQuote, writeJson } from './fs-utils.js';
 import type { InstallContext, Installer } from './types.js';
 
 interface ClaudeSettings {
@@ -34,13 +34,18 @@ export const claudeCode: Installer = {
     const path = settingsFile();
     const current = readJson<ClaudeSettings>(path, {});
     const hooks: ClaudeSettings['hooks'] = { ...(current.hooks ?? {}) };
+    // Hook commands are shell strings, so nodeBin + cliPath must be quoted —
+    // Windows npm installs land under paths like C:\Users\...\AppData that
+    // may contain spaces. Both cmd.exe and sh treat "..." as one argv token.
+    const nodeBin = shellQuote(ctx.nodeBin);
+    const cliPath = shellQuote(ctx.cliPath);
     for (const [claudeName, hookId] of HOOK_NAMES) {
       hooks[claudeName] = [
         {
           hooks: [
             {
               type: 'command',
-              command: `${ctx.cliPath} hook run ${hookId} --ide claude-code`,
+              command: `${nodeBin} ${cliPath} hook run ${hookId} --ide claude-code`,
             },
           ],
         },
@@ -49,8 +54,10 @@ export const claudeCode: Installer = {
     const mcpServers = {
       ...(current.mcpServers ?? {}),
       cavemem: {
-        command: ctx.cliPath,
-        args: ['mcp'],
+        // Spawn node explicitly — if command is the .js file, Claude Code's
+        // MCP launcher can't exec it on Windows (EFTYPE).
+        command: ctx.nodeBin,
+        args: [ctx.cliPath, 'mcp'],
       },
     };
     const next = deepMerge<ClaudeSettings>(current, { hooks, mcpServers });

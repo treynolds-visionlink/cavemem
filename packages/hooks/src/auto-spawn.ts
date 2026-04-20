@@ -37,7 +37,10 @@ export function ensureWorkerRunning(settings: Settings): void {
   if (!cli) return;
 
   try {
-    const child = spawn(cli, ['worker', 'start'], {
+    // Spawn `node <cli> worker start` — Windows can't exec a raw .js path
+    // (EFTYPE), and `cli` is the .js entry when the hook runs through the
+    // cavemem CLI.
+    const child = spawn(process.execPath, [cli, 'worker', 'start'], {
       detached: true,
       stdio: 'ignore',
       env: { ...process.env },

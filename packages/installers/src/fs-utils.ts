@@ -15,6 +15,17 @@ export function writeJson(path: string, data: unknown): void {
   writeFileSync(path, `${JSON.stringify(data, null, 2)}\n`, 'utf8');
 }
 
+/**
+ * Quote a path for embedding into a shell command string (e.g., Claude
+ * Code hook `command` fields). Wraps in double quotes unless the path is
+ * already a bare token with no whitespace or shell metacharacters. On
+ * Windows, double quotes also protect backslashes from being consumed.
+ */
+export function shellQuote(p: string): string {
+  if (/^[\w@%+=:,./\\-]+$/.test(p)) return p;
+  return `"${p.replace(/"/g, '\\"')}"`;
+}
+
 export function deepMerge<T>(base: T, add: Partial<T>): T {
   const out = { ...(base as Record<string, unknown>) };
   for (const [k, v] of Object.entries(add as Record<string, unknown>)) {

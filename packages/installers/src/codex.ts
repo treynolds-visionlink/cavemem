@@ -22,7 +22,7 @@ export const codex: Installer = {
     const path = configFile();
     const current = readJson<CodexConfig>(path, {});
     const next = deepMerge<CodexConfig>(current, {
-      mcpServers: { cavemem: { command: ctx.cliPath, args: ['mcp'] } },
+      mcpServers: { cavemem: { command: ctx.nodeBin, args: [ctx.cliPath, 'mcp'] } },
     });
     writeJson(path, next);
     return [`wrote ${path}`];

@@ -33,6 +33,7 @@ export function registerInstallCommand(program: Command): void {
       const ctx = {
         ideConfigDir: homedir(),
         cliPath: resolveCliPath(),
+        nodeBin: process.execPath,
         dataDir: resolveDataDir(settings.dataDir),
       };
       const installer = getInstaller(name);

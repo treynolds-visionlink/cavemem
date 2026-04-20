@@ -22,7 +22,7 @@ export const openCode: Installer = {
     const path = configFile();
     const current = readJson<OpenCodeConfig>(path, {});
     const next = deepMerge<OpenCodeConfig>(current, {
-      mcpServers: { cavemem: { command: ctx.cliPath, args: ['mcp'] } },
+      mcpServers: { cavemem: { command: ctx.nodeBin, args: [ctx.cliPath, 'mcp'] } },
     });
     writeJson(path, next);
     return [`wrote ${path}`];

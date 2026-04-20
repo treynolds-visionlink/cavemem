@@ -18,7 +18,8 @@ beforeEach(() => {
   process.env.HOME = home;
   ctx = {
     ideConfigDir: home,
-    cliPath: '/fake/bin/cavemem',
+    cliPath: '/fake/bin/cavemem.js',
+    nodeBin: '/fake/bin/node',
     dataDir: join(home, '.cavemem'),
   };
 });
@@ -70,9 +71,12 @@ describe('claude-code installer', () => {
       ['PostToolUse', 'SessionEnd', 'SessionStart', 'Stop', 'UserPromptSubmit'].sort(),
     );
     expect(first.hooks.SessionStart?.[0]?.hooks?.[0]?.command).toBe(
-      `${ctx.cliPath} hook run session-start --ide claude-code`,
+      `${ctx.nodeBin} ${ctx.cliPath} hook run session-start --ide claude-code`,
     );
-    expect(first.mcpServers.cavemem).toEqual({ command: ctx.cliPath, args: ['mcp'] });
+    expect(first.mcpServers.cavemem).toEqual({
+      command: ctx.nodeBin,
+      args: [ctx.cliPath, 'mcp'],
+    });
 
     await claudeCode.install(ctx); // run twice
     const second = JSON.parse(readFileSync(settingsPath, 'utf8')) as typeof first;
@@ -112,6 +116,31 @@ describe('claude-code installer', () => {
     expect(after.hooks.CustomEvent).toBeDefined();
   });
 
+  it('quotes paths with spaces in hook command strings (Windows)', async () => {
+    const winCtx: InstallContext = {
+      ideConfigDir: home,
+      cliPath: 'C:\\Users\\Some User\\AppData\\Roaming\\npm\\node_modules\\cavemem\\dist\\index.js',
+      nodeBin: 'C:\\Program Files\\nodejs\\node.exe',
+      dataDir: join(home, '.cavemem'),
+    };
+    await claudeCode.install(winCtx);
+    const settingsPath = join(home, '.claude', 'settings.json');
+    const parsed = JSON.parse(readFileSync(settingsPath, 'utf8')) as {
+      hooks: Record<string, Array<{ hooks: Array<{ command: string }> }>>;
+      mcpServers: Record<string, { command: string; args: string[] }>;
+    };
+    const cmd = parsed.hooks.SessionStart?.[0]?.hooks?.[0]?.command ?? '';
+    expect(cmd).toBe(
+      `"${winCtx.nodeBin}" "${winCtx.cliPath}" hook run session-start --ide claude-code`,
+    );
+    // MCP entry is a structured shape, so no quoting needed there — Claude
+    // spawns command + args directly.
+    expect(parsed.mcpServers.cavemem).toEqual({
+      command: winCtx.nodeBin,
+      args: [winCtx.cliPath, 'mcp'],
+    });
+  });
+
   it('detect returns true only when ~/.claude exists', async () => {
     expect(await claudeCode.detect(ctx)).toBe(false);
     mkdirSync(join(home, '.claude'));
@@ -127,7 +156,10 @@ describe('cursor installer', () => {
     const cfg = JSON.parse(readFileSync(p, 'utf8')) as {
       mcpServers: Record<string, { command: string; args?: string[] }>;
     };
-    expect(cfg.mcpServers.cavemem).toEqual({ command: ctx.cliPath, args: ['mcp'] });
+    expect(cfg.mcpServers.cavemem).toEqual({
+      command: ctx.nodeBin,
+      args: [ctx.cliPath, 'mcp'],
+    });
 
     await cursor.uninstall(ctx);
     const after = JSON.parse(readFileSync(p, 'utf8')) as typeof cfg;

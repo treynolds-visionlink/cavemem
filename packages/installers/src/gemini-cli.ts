@@ -24,7 +24,7 @@ export const geminiCli: Installer = {
     const current = readJson<GeminiSettings>(path, {});
     const next = deepMerge<GeminiSettings>(current, {
       mcpServers: {
-        cavemem: { command: ctx.cliPath, args: ['mcp'] },
+        cavemem: { command: ctx.nodeBin, args: [ctx.cliPath, 'mcp'] },
       },
     });
     writeJson(path, next);

@@ -18,6 +18,7 @@ export function registerUninstallCommand(program: Command): void {
       const msgs = await installer.uninstall({
         ideConfigDir: homedir(),
         cliPath: resolveCliPath(),
+        nodeBin: process.execPath,
         dataDir: resolveDataDir(settings.dataDir),
       });
       for (const m of msgs) process.stdout.write(`${kleur.yellow('·')} ${m}\n`);
