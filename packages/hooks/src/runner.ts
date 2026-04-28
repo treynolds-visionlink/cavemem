@@ -24,17 +24,17 @@ export async function runHook(
 ): Promise<HookResult> {
   const start = performance.now();
   const injected = opts.store !== undefined;
-  let store: MemoryStore;
+  let store: MemoryStore | undefined;
   let settingsForSpawn: ReturnType<typeof loadSettings> | undefined;
-  if (opts.store) {
-    store = opts.store;
-  } else {
-    const settings = loadSettings();
-    settingsForSpawn = settings;
-    const dbPath = join(resolveDataDir(settings.dataDir), 'data.db');
-    store = new MemoryStore({ dbPath, settings });
-  }
   try {
+    if (opts.store) {
+      store = opts.store;
+    } else {
+      const settings = loadSettings();
+      settingsForSpawn = settings;
+      const dbPath = join(resolveDataDir(settings.dataDir), 'data.db');
+      store = new MemoryStore({ dbPath, settings });
+    }
     let context: string | undefined;
     switch (name) {
       case 'session-start':
@@ -69,6 +69,6 @@ export async function runHook(
       error: err instanceof Error ? err.message : String(err),
     };
   } finally {
-    if (!injected) store.close();
+    if (!injected && store) store.close();
   }
 }

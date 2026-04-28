@@ -41,7 +41,15 @@ export function registerHookCommand(program: Command): void {
         ...(opts.ide ? { ide: opts.ide } : {}),
       } as Parameters<typeof runHook>[1];
 
-      const result = await runHook(hookName, input);
+      let result: HookResult;
+      try {
+        result = await runHook(hookName, input);
+      } catch (err) {
+        const error = err instanceof Error ? err.message : String(err);
+        process.stderr.write(`${JSON.stringify({ hook: hookName, ok: false, error })}\n`);
+        process.exitCode = 1;
+        return;
+      }
 
       // Telemetry always goes to stderr — stdout is reserved for the IDE's
       // hook protocol and any text we put there is interpreted (e.g. injected

@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { claudeCode } from '../src/claude-code.js';
 import { cursor } from '../src/cursor.js';
-import { deepMerge } from '../src/fs-utils.js';
+import { deepMerge, injectMarkdownBlock, removeMarkdownBlock } from '../src/fs-utils.js';
 import { getInstaller, installers } from '../src/registry.js';
 import type { InstallContext } from '../src/types.js';
 
@@ -145,6 +145,93 @@ describe('claude-code installer', () => {
     expect(await claudeCode.detect(ctx)).toBe(false);
     mkdirSync(join(home, '.claude'));
     expect(await claudeCode.detect(ctx)).toBe(true);
+  });
+});
+
+describe('injectMarkdownBlock / removeMarkdownBlock', () => {
+  let tmpDir: string;
+  beforeEach(() => { tmpDir = mkdtempSync(join(tmpdir(), 'cavemem-md-')); });
+  afterEach(() => { rmSync(tmpDir, { recursive: true, force: true }); });
+
+  it('creates file with sentinel block when it does not exist', () => {
+    const p = join(tmpDir, 'CLAUDE.md');
+    injectMarkdownBlock(p, 'rule text');
+    const content = readFileSync(p, 'utf8');
+    expect(content).toContain('<!-- cavemem:start -->');
+    expect(content).toContain('rule text');
+    expect(content).toContain('<!-- cavemem:end -->');
+  });
+
+  it('appends to existing file without duplicating', () => {
+    const p = join(tmpDir, 'CLAUDE.md');
+    writeFileSync(p, '# Existing\n\nsome content\n');
+    injectMarkdownBlock(p, 'rule text');
+    const content = readFileSync(p, 'utf8');
+    expect(content).toContain('# Existing');
+    expect(content).toContain('rule text');
+    expect((content.match(/cavemem:start/g) ?? []).length).toBe(1);
+  });
+
+  it('replaces block in-place on second inject', () => {
+    const p = join(tmpDir, 'CLAUDE.md');
+    injectMarkdownBlock(p, 'old rule');
+    injectMarkdownBlock(p, 'new rule');
+    const content = readFileSync(p, 'utf8');
+    expect(content).not.toContain('old rule');
+    expect(content).toContain('new rule');
+    expect((content.match(/cavemem:start/g) ?? []).length).toBe(1);
+  });
+
+  it('removeMarkdownBlock strips block and leaves surrounding content', () => {
+    const p = join(tmpDir, 'CLAUDE.md');
+    writeFileSync(p, '# Top\n\nsome content\n');
+    injectMarkdownBlock(p, 'rule text');
+    removeMarkdownBlock(p);
+    const content = readFileSync(p, 'utf8');
+    expect(content).toContain('# Top');
+    expect(content).not.toContain('cavemem:start');
+    expect(content).not.toContain('rule text');
+  });
+
+  it('removeMarkdownBlock is a no-op on missing file', () => {
+    expect(() => removeMarkdownBlock(join(tmpDir, 'missing.md'))).not.toThrow();
+  });
+});
+
+describe('claude-code installer CLAUDE.md', () => {
+  it('injects rule on install and removes it on uninstall', async () => {
+    await claudeCode.install(ctx);
+    const mdPath = join(home, '.claude', 'CLAUDE.md');
+    expect(existsSync(mdPath)).toBe(true);
+    const installed = readFileSync(mdPath, 'utf8');
+    expect(installed).toContain('<!-- cavemem:start -->');
+    expect(installed).toContain('cavemem:search');
+    expect(installed).toContain('<!-- cavemem:end -->');
+
+    await claudeCode.uninstall(ctx);
+    const after = readFileSync(mdPath, 'utf8');
+    expect(after).not.toContain('cavemem:start');
+    expect(after).not.toContain('cavemem:search');
+  });
+
+  it('install is idempotent — no duplicate sentinel blocks', async () => {
+    await claudeCode.install(ctx);
+    await claudeCode.install(ctx);
+    const mdPath = join(home, '.claude', 'CLAUDE.md');
+    const content = readFileSync(mdPath, 'utf8');
+    expect((content.match(/cavemem:start/g) ?? []).length).toBe(1);
+  });
+
+  it('preserves existing CLAUDE.md content on install + uninstall', async () => {
+    const mdPath = join(home, '.claude', 'CLAUDE.md');
+    mkdirSync(join(home, '.claude'), { recursive: true });
+    writeFileSync(mdPath, '# My rules\n\nDo not break prod.\n');
+
+    await claudeCode.install(ctx);
+    expect(readFileSync(mdPath, 'utf8')).toContain('Do not break prod.');
+
+    await claudeCode.uninstall(ctx);
+    expect(readFileSync(mdPath, 'utf8')).toContain('Do not break prod.');
   });
 });
 

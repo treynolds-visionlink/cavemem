@@ -1,7 +1,7 @@
 import { existsSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { join } from 'node:path';
-import { deepMerge, readJson, shellQuote, writeJson } from './fs-utils.js';
+import { deepMerge, injectMarkdownBlock, readJson, removeMarkdownBlock, shellQuote, writeJson } from './fs-utils.js';
 import type { InstallContext, Installer } from './types.js';
 
 interface ClaudeSettings {
@@ -20,8 +20,15 @@ const HOOK_NAMES: Array<[string, string]> = [
   ['SessionEnd', 'session-end'],
 ];
 
+const CLAUDE_MD_RULE =
+  'At the start of each new task or when entering unfamiliar context, call cavemem:search with keywords derived from the task. Use results to orient yourself before exploring the codebase directly.';
+
 function settingsFile(): string {
   return join(homedir(), '.claude', 'settings.json');
+}
+
+function claudeMdFile(): string {
+  return join(homedir(), '.claude', 'CLAUDE.md');
 }
 
 export const claudeCode: Installer = {
@@ -62,7 +69,9 @@ export const claudeCode: Installer = {
     };
     const next = deepMerge<ClaudeSettings>(current, { hooks, mcpServers });
     writeJson(path, next);
-    return [`wrote ${path}`];
+    const mdPath = claudeMdFile();
+    injectMarkdownBlock(mdPath, CLAUDE_MD_RULE);
+    return [`wrote ${path}`, `updated ${mdPath}`];
   },
   async uninstall(_ctx: InstallContext): Promise<string[]> {
     const path = settingsFile();
@@ -72,6 +81,8 @@ export const claudeCode: Installer = {
     }
     if (current.mcpServers) delete current.mcpServers.cavemem;
     writeJson(path, current);
-    return [`updated ${path}`];
+    const mdPath = claudeMdFile();
+    removeMarkdownBlock(mdPath);
+    return [`updated ${path}`, `updated ${mdPath}`];
   },
 };
